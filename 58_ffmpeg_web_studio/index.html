@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FFmpeg Web Studio - Visual Command Generator & Cheat Sheet</title>
+    <meta name="description" content="Generate perfect FFmpeg commands with a single click. Compress for Discord 10MB, convert video to crisp GIF, extract MP3 audio, trim, scale, and adjust speed visually.">
+    <meta name="keywords" content="ffmpeg command generator, ffmpeg discord compressor, ffmpeg video to gif, extract audio ffmpeg, ffmpeg cheat sheet, ffmpeg online">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎬</text></svg>">
+</head>
+<body>
+    <header class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <span class="logo-icon">🎬</span>
+                <span class="logo-text">FFmpeg <span class="highlight">Studio</span></span>
+                <span class="version-tag">Web Edition</span>
+            </div>
+            <div class="nav-links">
+                <a href="#presets" class="nav-item active">Popular Presets</a>
+                <a href="#custom" class="nav-item">Custom Builder</a>
+                <a href="#explain" class="nav-item">Flag Explainer</a>
+                <a href="https://balaji-amg.surge.sh/support.html" target="_blank" class="nav-btn">About & Support</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1>Visual <span class="gradient-text">FFmpeg Command</span> Generator</h1>
+            <p class="subtitle">Stop wrestling with complex CLI flags. Generate production-ready, high-performance FFmpeg commands visually in seconds.</p>
+        </section>
+
+        <!-- Command Output Sticky Bar -->
+        <section class="terminal-card">
+            <div class="terminal-header">
+                <div class="terminal-dots">
+                    <span class="dot dot-red"></span>
+                    <span class="dot dot-yellow"></span>
+                    <span class="dot dot-green"></span>
+                </div>
+                <div class="terminal-title">Generated FFmpeg Command</div>
+                <div class="terminal-actions">
+                    <button id="btnCopy" class="btn-copy">
+                        <svg class="icon-copy" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                        <span>Copy Command</span>
+                    </button>
+                </div>
+            </div>
+            <div class="terminal-body">
+                <div class="command-line">
+                    <span class="prompt">$</span>
+                    <code id="commandOutput">ffmpeg -i input.mp4 -c:v libx264 -crf 23 -preset medium -c:a aac -b:a 128k output.mp4</code>
+                </div>
+            </div>
+            <div id="copyToast" class="toast">Copied to clipboard! 🚀</div>
+        </section>
+
+        <!-- Main Configuration Grid -->
+        <div class="grid-layout">
+            <!-- Left Column: Operations & Presets -->
+            <div class="config-column">
+                <!-- Preset Categories -->
+                <div class="card">
+                    <h2 class="card-title">1. Select Preset Operation</h2>
+                    <div class="preset-grid">
+                        <button class="preset-btn active" data-preset="discord">
+                            <span class="p-icon">🎮</span>
+                            <span class="p-name">Discord 10MB Compress</span>
+                            <span class="p-desc">Auto-calculate target bitrate</span>
+                        </button>
+                        <button class="preset-btn" data-preset="gif">
+                            <span class="p-icon">🎞️</span>
+                            <span class="p-name">High-Quality GIF</span>
+                            <span class="p-desc">2-Pass Palettegen (No Grain)</span>
+                        </button>
+                        <button class="preset-btn" data-preset="audio">
+                            <span class="p-icon">🎵</span>
+                            <span class="p-name">Extract Audio (MP3)</span>
+                            <span class="p-desc">Lossless or 320kbps MP3/WAV</span>
+                        </button>
+                        <button class="preset-btn" data-preset="trim">
+                            <span class="p-icon">✂️</span>
+                            <span class="p-name">Trim & Cut</span>
+                            <span class="p-desc">Fast Stream Copy without re-encoding</span>
+                        </button>
+                        <button class="preset-btn" data-preset="scale">
+                            <span class="p-icon">📐</span>
+                            <span class="p-name">Scale / Change Resolution</span>
+                            <span class="p-desc">1080p, 720p, or 9:16 Vertical</span>
+                        </button>
+                        <button class="preset-btn" data-preset="speed">
+                            <span class="p-icon">⚡</span>
+                            <span class="p-name">Speed / Slow-Mo</span>
+                            <span class="p-desc">0.5x to 2.0x with Pitch Sync</span>
+                        </button>
+                        <button class="preset-btn" data-preset="mute">
+                            <span class="p-icon">🔇</span>
+                            <span class="p-name">Remove Audio Track</span>
+                            <span class="p-desc">Strip audio without video re-encode</span>
+                        </button>
+                        <button class="preset-btn" data-preset="transcode">
+                            <span class="p-icon">🔄</span>
+                            <span class="p-name">Convert Format</span>
+                            <span class="p-desc">MKV, MOV, WebM to MP4</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Parameters for Selected Operation -->
+                <div class="card" id="paramsCard">
+                    <h2 class="card-title">2. Tune Parameters</h2>
+                    
+                    <!-- File Names -->
+                    <div class="form-row">
+                        <div class="form-group flex-1">
+                            <label for="inputFile">Input File Name</label>
+                            <input type="text" id="inputFile" value="input.mp4" class="input-text">
+                        </div>
+                        <div class="form-group flex-1">
+                            <label for="outputFile">Output File Name</label>
+                            <input type="text" id="outputFile" value="output.mp4" class="input-text">
+                        </div>
+                    </div>
+
+                    <!-- Dynamic Preset Settings -->
+                    <div id="dynamicSettings">
+                        <!-- Populated by JavaScript according to chosen preset -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Explainer & Cheat Sheet -->
+            <div class="info-column">
+                <!-- Command Breakdown Explainer -->
+                <div class="card">
+                    <h2 class="card-title">💡 Command Breakdown</h2>
+                    <p class="card-subtitle">Understand exactly what each parameter does in this command:</p>
+                    <div id="explainerList" class="explainer-list">
+                        <!-- Filled by JS -->
+                    </div>
+                </div>
+
+                <!-- Fast Terminal Quick Tips -->
+                <div class="card">
+                    <h2 class="card-title">🚀 FFmpeg Power Tips</h2>
+                    <ul class="tips-list">
+                        <li><strong>Fast Cuts:</strong> Use <code>-ss</code> <em>before</em> <code>-i</code> to seek quickly using keyframes.</li>
+                        <li><strong>Stream Copy:</strong> <code>-c copy</code> skips encoding entirely, completing operations in sub-seconds.</li>
+                        <li><strong>Aspect Ratio:</strong> Using <code>scale=-2:720</code> forces the width to automatically scale while keeping divisible-by-2 compatibility for H.264 codecs.</li>
+                        <li><strong>Hardware Acceleration:</strong> Add <code>-hwaccel auto</code> or <code>-c:v h264_nvenc</code> on NVIDIA RTX GPUs for 5x encoding speed!</li>
+                    </ul>
+                </div>
+
+                <!-- Support & Donation Card -->
+                <div class="card donation-card">
+                    <div class="donation-header">
+                        <span class="gift-icon">☕</span>
+                        <div>
+                            <h3>Support Free Web Tools</h3>
+                            <p>No ads blocking your screen. Built for speed and productivity.</p>
+                        </div>
+                    </div>
+                    <div class="donation-body">
+                        <p class="donation-hint">Find this tool helpful? Tip the developer a coffee via Amazon eGift Card:</p>
+                        <div class="donation-copy-box">
+                            <span class="donation-email">donate@novafortixlab.com</span>
+                            <button class="btn-copy-sm" onclick="copyDonationEmail()">Copy</button>
+                        </div>
+                        <a href="https://www.amazon.com/dp/B07PCMWTSG" target="_blank" class="btn-amazon-donate">
+                            Send $5 Amazon eGift Card &rarr;
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Free Developer Suite Cross-Links -->
+        <section class="tool-matrix">
+            <span class="matrix-title">Explore Free Developer & AI Productivity Suite</span>
+            <div class="matrix-links">
+                <a href="https://ffmpeg-web-studio.surge.sh" class="matrix-badge active">
+                    <span>🎬</span> <strong>FFmpeg Web Studio</strong>
+                </a>
+                <a href="https://cron-wizard.surge.sh" target="_blank" class="matrix-badge">
+                    <span>⏱️</span> CronWizard
+                </a>
+                <a href="https://palette-extractor.surge.sh" target="_blank" class="matrix-badge">
+                    <span>🎨</span> Palette Extractor
+                </a>
+                <a href="https://jwt-decoder-pro.surge.sh" target="_blank" class="matrix-badge">
+                    <span>🔑</span> JWT Decoder
+                </a>
+                <a href="https://minuo0079-whisper-subtitle-cleaner.static.hf.space" target="_blank" class="matrix-badge">
+                    <span>🎙️</span> Whisper AI Cleaner
+                </a>
+                <a href="https://minuo0079-freelatex-converter.static.hf.space" target="_blank" class="matrix-badge">
+                    <span>📄</span> FreeLaTeX Converter
+                </a>
+            </div>
+        </section>
+
+        <!-- Adsterra 728x90 Banner -->
+        <div class="ad-wrapper">
+            <div class="ad-container">
+                <script>
+                    atOptions = {
+                        'key' : '85b041ea74f05a424e5f4f888f8df500',
+                        'format' : 'iframe',
+                        'height' : 90,
+                        'width' : 728,
+                        'params' : {}
+                    };
+                </script>
+                <script src="https://bauval.org/22/85b041ea74f05a424e5f4f888f8df500"></script>
+            </div>
+            <div class="ad-caption">Advertisement &bull; Clean & Verified</div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 FFmpeg Web Studio &bull; Built with pure client-side web technologies &bull; Free & Open-Access</p>
+    </footer>
+
+    <script src="app.js"></script>
+    <!-- Adsterra Social Bar -->
+    <script data-cfasync="false" src="https://bauval.org/14/e72d714c5a096d2c92789d19171a3336"></script>
+</body>
+</html>

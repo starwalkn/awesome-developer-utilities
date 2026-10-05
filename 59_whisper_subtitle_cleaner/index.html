@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Whisper AI Subtitle Cleaner & Transcript Formatter</title>
+    <meta name="description" content="Free online tool to strip timestamps from SRT and VTT subtitle files. Turn Whisper AI transcripts into readable paragraphs and generate 1-click prompts for ChatGPT & Claude.">
+    <meta name="keywords" content="whisper subtitle cleaner, srt to text, remove timestamps srt, vtt to txt, whisper transcript formatter, ai meeting minutes prompt">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎙️</text></svg>">
+</head>
+<body>
+    <header class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <span class="logo-icon">🎙️</span>
+                <span class="logo-text">Whisper<span class="highlight">Cleaner</span></span>
+                <span class="badge">AI Transcript Suite</span>
+            </div>
+            <div class="nav-links">
+                <span class="privacy-pill">🔒 100% Client-Side Privacy</span>
+                <a href="https://balaji-amg.surge.sh/support.html" target="_blank" class="nav-btn">About & Support</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1>Transform Raw Subtitles into <span class="gradient-text">Clean Articles & AI Prompts</span></h1>
+            <p class="subtitle">Instantly strip timestamps from SRT, VTT, and SBV files. Reconstruct natural sentences and wrap with 1-click prompts for ChatGPT, Claude, and Gemini.</p>
+        </section>
+
+        <!-- Stats Counter -->
+        <section class="stats-bar">
+            <div class="stat-item">
+                <span class="stat-num" id="statWords">0</span>
+                <span class="stat-label">Words</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-num" id="statChars">0</span>
+                <span class="stat-label">Characters</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-num" id="statTime">0m</span>
+                <span class="stat-label">Est. Read Time</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-num stat-highlight" id="statStripped">0</span>
+                <span class="stat-label">Timestamps Stripped</span>
+            </div>
+        </section>
+
+        <!-- Tool Workspace -->
+        <div class="workspace-grid">
+            <!-- Left Panel: Input & Settings -->
+            <div class="panel">
+                <div class="panel-header">
+                    <span class="panel-title">1. Input Raw Subtitle / Transcript</span>
+                    <button class="btn-text" id="btnLoadSample">Load Sample SRT</button>
+                    <button class="btn-text danger" id="btnClear">Clear</button>
+                </div>
+
+                <!-- Drag & Drop Zone -->
+                <div class="drop-zone" id="dropZone">
+                    <input type="file" id="fileInput" accept=".srt,.vtt,.sbv,.txt" class="file-input-hidden">
+                    <span class="drop-icon">📂</span>
+                    <p class="drop-text">Drag & drop your <strong>.srt, .vtt, .sbv</strong> file here, or <label for="fileInput" class="drop-browse">browse</label></p>
+                </div>
+
+                <div class="textarea-wrapper">
+                    <textarea id="rawInput" placeholder="Or paste your raw SRT / VTT subtitle text here...&#10;&#10;1&#10;00:00:01,200 --> 00:00:04,500&#10;Welcome to today's AI research podcast."></textarea>
+                </div>
+
+                <!-- Cleaning Toggles -->
+                <div class="options-box">
+                    <span class="options-title">Cleaning Rules:</span>
+                    <div class="toggle-grid">
+                        <label class="toggle-item">
+                            <input type="checkbox" id="chkTimestamps" checked>
+                            <span>Strip Timestamps & Indices</span>
+                        </label>
+                        <label class="toggle-item">
+                            <input type="checkbox" id="chkSoundTags" checked>
+                            <span>Remove Sound Tags [Music], [Applause]</span>
+                        </label>
+                        <label class="toggle-item">
+                            <input type="checkbox" id="chkSpeakerTags" checked>
+                            <span>Remove Speaker Labels (Speaker 1:, >>)</span>
+                        </label>
+                        <label class="toggle-item">
+                            <input type="checkbox" id="chkParagraphs" checked>
+                            <span>Intelligent Paragraph Merging</span>
+                        </label>
+                        <label class="toggle-item">
+                            <input type="checkbox" id="chkDeduplicate" checked>
+                            <span>Remove Whisper Loop Hallucinations</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel: Output & AI Prompt Wrap -->
+            <div class="panel">
+                <div class="panel-header">
+                    <span class="panel-title">2. Output & 1-Click AI Format</span>
+                    <div class="output-actions">
+                        <button class="btn-action" id="btnCopy">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                            <span>Copy</span>
+                        </button>
+                        <button class="btn-action" id="btnDownload">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                            <span>Download .MD</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Mode Tabs -->
+                <div class="mode-tabs">
+                    <button class="tab-btn active" data-mode="clean">Clean Article</button>
+                    <button class="tab-btn" data-mode="summary">AI Executive Summary</button>
+                    <button class="tab-btn" data-mode="meeting">Meeting Minutes</button>
+                    <button class="tab-btn" data-mode="podcast">Show Notes & Chapters</button>
+                    <button class="tab-btn" data-mode="social">Twitter / X Thread</button>
+                </div>
+
+                <div class="textarea-wrapper">
+                    <textarea id="cleanedOutput" readonly placeholder="Your cleaned, readable text or AI prompt will appear here in real time..."></textarea>
+                </div>
+
+                <!-- Donation Callout inside Panel -->
+                <div class="support-banner">
+                    <span class="support-icon">☕</span>
+                    <div class="support-text">
+                        <span>Free for researchers, students & creators.</span>
+                        <a href="https://www.amazon.com/dp/B07PCMWTSG" target="_blank" class="support-link">Tip $5 via Amazon eGift Card (donate@novafortixlab.com) &rarr;</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="copyToast" class="toast">Copied to clipboard! 🚀</div>
+
+        <!-- Free Developer Suite Cross-Links -->
+        <section class="tool-matrix">
+            <span class="matrix-title">Explore Free Developer & AI Productivity Suite</span>
+            <div class="matrix-links">
+                <a href="https://minuo0079-whisper-subtitle-cleaner.static.hf.space" class="matrix-badge active">
+                    <span>🎙️</span> <strong>Whisper AI Subtitle Cleaner</strong>
+                </a>
+                <a href="https://cron-wizard.surge.sh" target="_blank" class="matrix-badge">
+                    <span>⏱️</span> CronWizard
+                </a>
+                <a href="https://palette-extractor.surge.sh" target="_blank" class="matrix-badge">
+                    <span>🎨</span> Palette Extractor
+                </a>
+                <a href="https://llm-token-counter.surge.sh" target="_blank" class="matrix-badge">
+                    <span>📊</span> LLM Token Counter
+                </a>
+                <a href="https://jwt-decoder-pro.surge.sh" target="_blank" class="matrix-badge">
+                    <span>🔑</span> JWT Decoder
+                </a>
+                <a href="https://ffmpeg-web-studio.surge.sh" target="_blank" class="matrix-badge">
+                    <span>🎬</span> FFmpeg Web Studio
+                </a>
+                <a href="https://minuo0079-freelatex-converter.static.hf.space" target="_blank" class="matrix-badge">
+                    <span>📄</span> FreeLaTeX Converter
+                </a>
+            </div>
+        </section>
+
+        <!-- Adsterra 728x90 Banner -->
+        <div class="ad-wrapper">
+            <div class="ad-container">
+                <script>
+                    atOptions = {
+                        'key' : '85b041ea74f05a424e5f4f888f8df500',
+                        'format' : 'iframe',
+                        'height' : 90,
+                        'width' : 728,
+                        'params' : {}
+                    };
+                </script>
+                <script src="https://bauval.org/22/85b041ea74f05a424e5f4f888f8df500"></script>
+            </div>
+            <div class="ad-caption">Advertisement &bull; Clean & Non-Intrusive</div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 Whisper AI Subtitle Cleaner &bull; 100% Client-Side In-Browser Processing &bull; No Data Transmitted</p>
+    </footer>
+
+    <script src="app.js"></script>
+    <!-- Adsterra Social Bar -->
+    <script data-cfasync="false" src="https://bauval.org/14/e72d714c5a096d2c92789d19171a3336"></script>
+</body>
+</html>

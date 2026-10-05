@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social Card Preview & OpenGraph Generator | Discord, Twitter, Google, Facebook</title>
+    <meta name="description" content="Free online OpenGraph and social card preview simulator. Test how your website link looks on Discord, Twitter / X, Google Search, Facebook, and LinkedIn. 100% client-side privacy.">
+    <meta name="keywords" content="open graph generator, social card preview, discord link preview, twitter card validator, meta tags generator, og image preview, og tags online">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏷️</text></svg>">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <span class="logo-icon">🏷️</span>
+                <span class="logo-text">Meta<span class="accent">Preview</span></span>
+                <span class="badge">Social Suite</span>
+            </div>
+            <div class="nav-right">
+                <span class="privacy-chip">🔒 100% Client-Side · Zero Server Uploads</span>
+                <a href="https://balaji-amg.surge.sh/support.html" target="_blank" class="nav-link">Support</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="hero">
+            <h1>Social Media <span class="gradient-text">Card Preview</span> & Meta Tag Generator</h1>
+            <p class="subtitle">Simulate how your URL card appears on Discord, Twitter / X, Google Search, Facebook, and LinkedIn in real time. Customize and export standard OpenGraph meta tags instantly.</p>
+        </section>
+
+        <!-- Main Workspace: Left Editor, Right Previews -->
+        <div class="workspace-grid">
+            <!-- Left Panel: Input Controls -->
+            <div class="panel editor-panel">
+                <div class="panel-header">
+                    <span class="panel-title">Metadata Inputs</span>
+                    <button id="btnLoadSample" class="btn-sm">Load Preset Example</button>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputTitle">Title <span class="char-count" id="countTitle">0 / 60</span></label>
+                    <input type="text" id="inputTitle" class="form-input" placeholder="e.g. Next-Gen Developer Utilities | Fast, Private & Free" maxlength="100">
+                    <span class="input-hint">Recommended: 40–60 characters to avoid truncation.</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputDesc">Description <span class="char-count" id="countDesc">0 / 160</span></label>
+                    <textarea id="inputDesc" class="form-textarea" placeholder="e.g. Instant client-side tools for developers, designers and creators. No tracking, zero servers, zero cookies." rows="3" maxlength="240"></textarea>
+                    <span class="input-hint">Recommended: 120–160 characters for optimal social engagement.</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputUrl">Canonical Webpage URL</label>
+                    <input type="url" id="inputUrl" class="form-input" placeholder="https://example.com/blog/my-awesome-post">
+                </div>
+
+                <div class="form-group">
+                    <label for="inputSite">Site Name</label>
+                    <input type="text" id="inputSite" class="form-input" placeholder="e.g. Acme Tech Labs">
+                </div>
+
+                <div class="form-group">
+                    <label>OG Image Preview (1200 × 630 px)</label>
+                    <div class="image-input-row">
+                        <input type="url" id="imageUrl" class="form-input" placeholder="https://example.com/assets/og-cover.png">
+                        <label for="fileImage" class="btn-upload-file">
+                            Upload File
+                            <input type="file" id="fileImage" accept="image/*" style="display:none">
+                        </label>
+                    </div>
+                    <span class="input-hint">Paste an image URL or choose a local image to preview client-side.</span>
+                </div>
+
+                <!-- Export Code Accordion -->
+                <div class="code-export-card">
+                    <div class="code-header">
+                        <span>Generated HTML &lt;head&gt; Meta Tags</span>
+                        <button class="btn-copy" id="btnCopyMeta">Copy Tags</button>
+                    </div>
+                    <pre><code id="metaCode"></code></pre>
+                </div>
+            </div>
+
+            <!-- Right Panel: Live Platform Card Simulators -->
+            <div class="panel preview-panel">
+                <div class="panel-header">
+                    <span class="panel-title">Live Simulator</span>
+                    <div class="platform-tabs" id="platformTabs">
+                        <button class="plat-tab active" data-target="discord">Discord</button>
+                        <button class="plat-tab" data-target="twitter">Twitter / X</button>
+                        <button class="plat-tab" data-target="google">Google</button>
+                        <button class="plat-tab" data-target="facebook">Facebook</button>
+                    </div>
+                </div>
+
+                <!-- 1. Discord Embed Simulator -->
+                <div class="preview-box" id="view-discord">
+                    <div class="discord-chat-bg">
+                        <div class="discord-bot-row">
+                            <div class="discord-avatar">🤖</div>
+                            <div class="discord-msg-body">
+                                <div class="discord-author">Bot <span class="discord-tag">BOT</span> <span class="discord-time">Today at 12:00 PM</span></div>
+                                <div class="discord-embed">
+                                    <div class="discord-embed-site" id="discordSite">Acme Tech Labs</div>
+                                    <div class="discord-embed-title" id="discordTitle">Title of Webpage</div>
+                                    <div class="discord-embed-desc" id="discordDesc">Description will appear here...</div>
+                                    <div class="discord-embed-img-wrap">
+                                        <img id="discordImg" src="" alt="Discord Preview" class="card-img">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. Twitter / X Large Summary Card -->
+                <div class="preview-box hidden" id="view-twitter">
+                    <div class="twitter-card-container">
+                        <div class="twitter-img-wrap">
+                            <img id="twitterImg" src="" alt="Twitter Card" class="card-img">
+                        </div>
+                        <div class="twitter-card-text">
+                            <div class="twitter-domain" id="twitterDomain">example.com</div>
+                            <div class="twitter-title" id="twitterTitle">Title of Webpage</div>
+                            <div class="twitter-desc" id="twitterDesc">Description of the link content goes here.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. Google Search Result Snippet -->
+                <div class="preview-box hidden" id="view-google">
+                    <div class="google-serp-container">
+                        <div class="google-site-row">
+                            <span class="google-favicon">🌐</span>
+                            <div class="google-site-meta">
+                                <div class="google-site-name" id="googleSite">Acme Tech Labs</div>
+                                <div class="google-url-line" id="googleUrl">https://example.com/blog/my-post</div>
+                            </div>
+                        </div>
+                        <div class="google-title" id="googleTitle">Page Title Example — Site Name</div>
+                        <div class="google-desc" id="googleDesc">Page description will appear here inside Google search result snippet.</div>
+                    </div>
+                </div>
+
+                <!-- 4. Facebook Feed Post Simulator -->
+                <div class="preview-box hidden" id="view-facebook">
+                    <div class="fb-card-container">
+                        <div class="fb-img-wrap">
+                            <img id="fbImg" src="" alt="Facebook Card" class="card-img">
+                        </div>
+                        <div class="fb-text-wrap">
+                            <div class="fb-domain" id="fbDomain">EXAMPLE.COM</div>
+                            <div class="fb-title" id="fbTitle">Page Title Example</div>
+                            <div class="fb-desc" id="fbDesc">Description for the post.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tool Matrix (All 7 Interconnected Tools) -->
+        <section class="tool-matrix">
+            <span class="matrix-title">More Free Developer & AI Productivity Suite</span>
+            <div class="matrix-links">
+                <a href="https://social-card-preview.surge.sh" class="matrix-badge active">
+                    <span>🏷️</span> <strong>Meta Preview</strong>
+                </a>
+                <a href="https://cron-wizard.surge.sh" target="_blank" class="matrix-badge">
+                    <span>⏱️</span> CronWizard
+                </a>
+                <a href="https://palette-extractor.surge.sh" target="_blank" class="matrix-badge">
+                    <span>🎨</span> Palette Extractor
+                </a>
+                <a href="https://llm-token-counter.surge.sh" target="_blank" class="matrix-badge">
+                    <span>📊</span> LLM Token Counter
+                </a>
+                <a href="https://jwt-decoder-pro.surge.sh" target="_blank" class="matrix-badge">
+                    <span>🔑</span> JWT Decoder
+                </a>
+                <a href="https://ffmpeg-web-studio.surge.sh" target="_blank" class="matrix-badge">
+                    <span>🎬</span> FFmpeg Web Studio
+                </a>
+                <a href="https://minuo0079-whisper-subtitle-cleaner.static.hf.space" target="_blank" class="matrix-badge">
+                    <span>🎙️</span> Whisper AI Cleaner
+                </a>
+                <a href="https://minuo0079-freelatex-converter.static.hf.space" target="_blank" class="matrix-badge">
+                    <span>📄</span> FreeLaTeX Converter
+                </a>
+            </div>
+        </section>
+
+        <!-- Adsterra 728x90 Banner -->
+        <div class="ad-wrapper">
+            <div class="ad-container">
+                <script>
+                    atOptions = {
+                        'key' : '85b041ea74f05a424e5f4f888f8df500',
+                        'format' : 'iframe',
+                        'height' : 90,
+                        'width' : 728,
+                        'params' : {}
+                    };
+                </script>
+                <script src="https://bauval.org/22/85b041ea74f05a424e5f4f888f8df500"></script>
+            </div>
+            <div class="ad-caption">Advertisement · Non-Intrusive · Verified</div>
+        </div>
+
+        <!-- Donation Section -->
+        <div class="donation-bar">
+            <span>☕ 100% Free & Open-Access. </span>
+            <span>Support via </span>
+            <a href="https://www.amazon.com/dp/B07PCMWTSG" target="_blank" class="amazon-link">Amazon eGift Card (min $5)</a>
+            <button class="btn-copy-email" onclick="copyEmail()">📋 donate@novafortixlab.com</button>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>MetaPreview &bull; Social Media Card Simulator &bull; 100% Client-Side In-Browser &bull; &copy; 2026</p>
+    </footer>
+
+    <div id="globalToast" class="toast"></div>
+
+    <script src="app.js"></script>
+    <script data-cfasync="false" src="https://bauval.org/14/e72d714c5a096d2c92789d19171a3336"></script>
+</body>
+</html>

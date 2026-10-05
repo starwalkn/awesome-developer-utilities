@@ -1,0 +1,25 @@
+
+:root { --bg: #000; --panel: #111; --text: #eaeaea; --accent: #22c55e; --border: #333; }
+body { margin: 0; padding: 20px; font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); display:flex; justify-content:center; }
+.container { max-width: 800px; width: 100%; }
+header { text-align: center; margin-bottom: 2rem; }
+.terminal-box { background: #0a0a0a; border: 1px solid #333; border-radius: 8px; overflow: hidden; margin-bottom: 30px; box-shadow: 0 10px 30px rgba(34,197,94,0.1); }
+.t-head { background: #1a1a1a; padding: 10px 15px; border-bottom: 1px solid #333; display: flex; gap: 8px; }
+.t-dot { width: 12px; height: 12px; border-radius: 50%; }
+.red { background: #ef4444; } .yel { background: #eab308; } .grn { background: #22c55e; }
+.t-body { padding: 30px; text-align: center; font-family: monospace; }
+#cmd-out { font-size: 2.5rem; color: var(--accent); margin-bottom: 10px; }
+#sym-out { font-size: 1.5rem; color: #888; letter-spacing: 2px; }
+
+.controls { display: flex; gap: 20px; justify-content: space-between; flex-wrap: wrap; }
+.col { flex: 1; min-width: 200px; background: #111; border: 1px solid #333; padding: 20px; border-radius: 8px; }
+.col h3 { margin-top: 0; border-bottom: 1px solid #333; padding-bottom: 10px; color: #888; }
+label { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; cursor: pointer; font-family: monospace; font-size: 16px; }
+input[type=checkbox] { width: 18px; height: 18px; accent-color: var(--accent); }
+
+.tool-matrix { margin-top: 40px; padding-top: 30px; border-top: 1px solid var(--border); text-align: center; }
+.matrix-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; margin-top: 20px; }
+.matrix-grid a { background: var(--panel); color: var(--text); padding: 10px; border-radius: 6px; text-decoration: none; border: 1px solid var(--border); transition: 0.2s; font-size: 0.9rem; }
+.matrix-grid a:hover { background: #222; border-color: var(--accent); }
+.donate-text { color: #888; font-size: 0.9rem; }
+.support-text a { color: var(--accent); text-decoration: none; font-weight: bold; }

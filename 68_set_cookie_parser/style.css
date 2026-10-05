@@ -1,0 +1,28 @@
+
+:root { --bg: #09090b; --panel: #18181b; --text: #f4f4f5; --accent: #8b5cf6; --acc-hover: #7c3aed; --red: #ef4444; --green: #10b981; --warn: #f59e0b; }
+body { margin: 0; padding: 20px; font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); display: flex; flex-direction: column; align-items: center; }
+.container { max-width: 900px; width: 100%; }
+header { text-align: center; margin-bottom: 2rem; }
+textarea { width: 100%; height: 120px; background: #09090b; color: #fff; border: 1px solid #27272a; padding: 15px; border-radius: 8px; font-family: monospace; font-size: 14px; box-sizing: border-box; margin-bottom: 15px; outline:none; }
+textarea:focus { border-color: var(--accent); }
+button { background: var(--accent); color: #fff; border: none; padding: 12px 24px; font-size: 16px; border-radius: 6px; cursor: pointer; transition: 0.2s; font-weight: bold; width: 100%; }
+button:hover { background: var(--acc-hover); }
+.hidden { display: none !important; }
+.cookie-card { background: var(--panel); border: 1px solid #27272a; border-radius: 8px; margin-bottom: 20px; overflow: hidden; margin-top:20px; }
+.cookie-header { background: #27272a; padding: 15px; font-family: monospace; font-size: 1.1rem; color: #c4b5fd; word-break: break-all; font-weight: bold; }
+.cookie-body { padding: 15px; overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; margin-top: 10px; min-width: 600px; }
+th, td { padding: 12px; text-align: left; border-bottom: 1px solid #27272a; }
+th { color: #a1a1aa; font-weight: 500; }
+.attr-name { font-family: monospace; font-weight: bold; }
+.status-badge { display: inline-block; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; }
+.status-ok { background: rgba(16, 185, 129, 0.2); color: var(--green); }
+.status-bad { background: rgba(239, 68, 68, 0.2); color: var(--red); }
+.status-warn { background: rgba(245, 158, 11, 0.2); color: var(--warn); }
+
+.tool-matrix { margin-top: 40px; padding-top: 30px; border-top: 1px solid #27272a; text-align: center; }
+.matrix-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; margin-top: 20px; }
+.matrix-grid a { background: var(--panel); color: var(--text); padding: 10px; border-radius: 6px; text-decoration: none; border: 1px solid #27272a; transition: 0.2s; font-size: 0.9rem; }
+.matrix-grid a:hover { background: #27272a; border-color: var(--accent); }
+.donate-text { color: #a1a1aa; font-size: 0.9rem; }
+.support-text a { color: var(--accent); text-decoration: none; font-weight: bold; }

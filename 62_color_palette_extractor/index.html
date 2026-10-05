@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Color Palette Extractor | Free Online Color Palette Generator</title>
+    <meta name="description" content="Extract beautiful, dominant color palettes from any image instantly. 100% client-side privacy. Export to CSS variables, Tailwind config, HEX, RGB, and SVG swatches.">
+    <meta name="keywords" content="image color palette extractor, color palette generator, extract colors from image, image color picker, hex color extractor, css gradient palette, tailwind color generator">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎨</text></svg>">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <span class="logo-icon">🎨</span>
+                <span class="logo-text">Palette<span class="accent">Extractor</span></span>
+                <span class="badge">Pro Suite</span>
+            </div>
+            <div class="nav-right">
+                <span class="privacy-chip">🔒 100% Client-Side · Images Never Uploaded</span>
+                <a href="https://balaji-amg.surge.sh/support.html" target="_blank" class="nav-link">Support</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1>Extract Dominant <span class="gradient-text">Color Palettes</span> from Any Image</h1>
+            <p class="subtitle">Drop any picture to extract harmonic hex color codes, check contrast ratios, and export ready-to-use CSS, Tailwind, or JSON code in sub-seconds.</p>
+        </section>
+
+        <!-- Dropzone & Quick Samples -->
+        <div class="upload-section">
+            <div class="dropzone" id="dropzone">
+                <input type="file" id="fileInput" accept="image/*" class="file-input">
+                <div class="drop-icon">🖼️</div>
+                <div class="drop-text">Drag & drop your image here, or <span class="browse-link">browse files</span></div>
+                <div class="drop-hint">Supports PNG, JPG, WebP, AVIF, GIF & SVG · Zero compression quality loss</div>
+            </div>
+
+            <div class="samples-bar">
+                <span class="sample-label">Or test with curated sample:</span>
+                <button class="btn-sample" data-sample="cyberpunk">🌆 Cyberpunk City</button>
+                <button class="btn-sample" data-sample="sunset">🌅 Sunset Coast</button>
+                <button class="btn-sample" data-sample="nature">🌲 Alpine Forest</button>
+                <button class="btn-sample" data-sample="minimal">☕ Warm Minimalist</button>
+            </div>
+        </div>
+
+        <!-- Main Workspace (Image Inspector + Palette) -->
+        <div class="workspace-grid" id="workspaceGrid" style="display:none;">
+            <!-- Left: Interactive Canvas Viewport -->
+            <div class="panel canvas-panel">
+                <div class="panel-header">
+                    <span class="panel-title">Interactive Eyedropper</span>
+                    <span class="eyedropper-hint">Hover over image to pick any precise pixel</span>
+                </div>
+                <div class="canvas-wrapper" id="canvasWrapper">
+                    <canvas id="imageCanvas"></canvas>
+                    <div class="loupe" id="loupe">
+                        <div class="loupe-preview" id="loupePreview"></div>
+                        <div class="loupe-text" id="loupeHex">#000000</div>
+                    </div>
+                </div>
+                <div class="controls-bar">
+                    <div class="control-group">
+                        <label for="colorCount">Palette Size:</label>
+                        <select id="colorCount" class="select-control">
+                            <option value="5">5 Colors (Core Scheme)</option>
+                            <option value="8" selected>8 Colors (Expanded Palette)</option>
+                            <option value="12">12 Colors (Full Spectrum)</option>
+                            <option value="16">16 Colors (Detailed)</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label for="colorSort">Sort By:</label>
+                        <select id="colorSort" class="select-control">
+                            <option value="dominance" selected>Dominance (Frequency)</option>
+                            <option value="hue">Hue (Rainbow Spectrum)</option>
+                            <option value="lightness">Lightness (Light to Dark)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Palette Cards & Export Suite -->
+            <div class="panel palette-panel">
+                <div class="panel-header">
+                    <span class="panel-title">Extracted Harmonious Palette</span>
+                    <button class="btn-action" id="btnDownloadSvg">⬇️ Download SVG Swatch</button>
+                </div>
+
+                <!-- Color Swatches Grid -->
+                <div class="swatches-grid" id="swatchesGrid">
+                    <!-- Populated dynamically by app.js -->
+                </div>
+
+                <!-- Code Export Card -->
+                <div class="export-box">
+                    <div class="export-tabs">
+                        <button class="export-tab active" data-tab="css">CSS Variables</button>
+                        <button class="export-tab" data-tab="tailwind">Tailwind Config</button>
+                        <button class="export-tab" data-tab="json">JSON Schema</button>
+                        <button class="export-tab" data-tab="hex">HEX List</button>
+                    </div>
+                    <div class="export-content">
+                        <pre><code id="exportCode">/* Select an image to generate code */</code></pre>
+                        <button class="btn-copy-code" id="btnCopyCode">Copy Code</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Developer Suite Cross-Links (6 Interconnected Tools) -->
+        <section class="tool-matrix">
+            <span class="matrix-title">More Free Developer & AI Productivity Suite</span>
+            <div class="matrix-links">
+                <a href="https://palette-extractor.surge.sh" class="matrix-badge active">
+                    <span>🎨</span> <strong>Palette Extractor</strong>
+                </a>
+                <a href="https://cron-wizard.surge.sh" target="_blank" class="matrix-badge">
+                    <span>⏱️</span> CronWizard
+                </a>
+                <a href="https://llm-token-counter.surge.sh" target="_blank" class="matrix-badge">
+                    <span>📊</span> LLM Token Counter
+                </a>
+                <a href="https://jwt-decoder-pro.surge.sh" target="_blank" class="matrix-badge">
+                    <span>🔑</span> JWT Decoder
+                </a>
+                <a href="https://ffmpeg-web-studio.surge.sh" target="_blank" class="matrix-badge">
+                    <span>🎬</span> FFmpeg Web Studio
+                </a>
+                <a href="https://minuo0079-whisper-subtitle-cleaner.static.hf.space" target="_blank" class="matrix-badge">
+                    <span>🎙️</span> Whisper AI Cleaner
+                </a>
+                <a href="https://minuo0079-freelatex-converter.static.hf.space" target="_blank" class="matrix-badge">
+                    <span>📄</span> FreeLaTeX Converter
+                </a>
+            </div>
+        </section>
+
+        <!-- Adsterra 728x90 Banner -->
+        <div class="ad-wrapper">
+            <div class="ad-container">
+                <script>
+                    atOptions = {
+                        'key' : '85b041ea74f05a424e5f4f888f8df500',
+                        'format' : 'iframe',
+                        'height' : 90,
+                        'width' : 728,
+                        'params' : {}
+                    };
+                </script>
+                <script src="https://bauval.org/22/85b041ea74f05a424e5f4f888f8df500"></script>
+            </div>
+            <div class="ad-caption">Advertisement · Non-Intrusive · Verified</div>
+        </div>
+
+        <!-- Donation Section -->
+        <div class="donation-bar">
+            <span>☕ 100% Free for designers & devs. </span>
+            <span>Support the creator via </span>
+            <a href="https://www.amazon.com/dp/B07PCMWTSG" target="_blank" class="amazon-link">Amazon eGift Card (min $5)</a>
+            <button class="btn-copy-email" onclick="copyEmail()">📋 donate@novafortixlab.com</button>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>Image Color Palette Extractor &bull; 100% In-Browser Native Canvas Processing &bull; No Tracking &bull; &copy; 2026</p>
+    </footer>
+
+    <div id="globalToast" class="toast"></div>
+
+    <script src="app.js"></script>
+    <!-- Adsterra Social Bar -->
+    <script data-cfasync="false" src="https://bauval.org/14/e72d714c5a096d2c92789d19171a3336"></script>
+</body>
+</html>

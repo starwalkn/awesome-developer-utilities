@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>cURL to Code Converter | Convert cURL to Python, JavaScript, Go, PHP</title>
+    <meta name="description" content="Free instant cURL to code converter. Convert cURL command line requests into Python requests, JavaScript fetch, Node.js axios, Go net/http, and PHP code. 100% private in-browser tool.">
+    <meta name="keywords" content="curl to python, curl to fetch, curl to code, curl converter online, curl to axios, convert curl to requests, curl to go">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <span class="logo-icon">⚡</span>
+                <span class="logo-text">cURL<span class="accent">Code</span></span>
+                <span class="badge">Multi-Lang</span>
+            </div>
+            <div class="nav-right">
+                <span class="privacy-chip">🔒 100% Client-Side · Zero Telemetry</span>
+                <a href="https://balaji-amg.surge.sh/support.html" target="_blank" class="nav-link">Support</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="hero">
+            <h1>Convert <span class="gradient-text">cURL Requests</span> into Native Code</h1>
+            <p class="subtitle">Paste raw cURL commands from browser DevTools or terminal and instantly generate production-ready code in Python, JavaScript Fetch, Axios, Go, and PHP.</p>
+        </section>
+
+        <!-- Parsed Request Overview Badges -->
+        <div class="meta-strip" id="metaStrip">
+            <div class="meta-item"><span class="meta-lbl">METHOD</span> <span class="meta-val badge-method" id="badgeMethod">GET</span></div>
+            <div class="meta-item"><span class="meta-lbl">URL</span> <span class="meta-val meta-url" id="badgeUrl">https://api.example.com/v1/data</span></div>
+            <div class="meta-item"><span class="meta-lbl">HEADERS</span> <span class="meta-val" id="badgeHeaders">0</span></div>
+            <div class="meta-item"><span class="meta-lbl">BODY TYPE</span> <span class="meta-val" id="badgeBody">None</span></div>
+        </div>
+
+        <!-- Main Workspace -->
+        <div class="workspace-grid">
+            <!-- Left: cURL Input -->
+            <div class="panel input-panel">
+                <div class="panel-header">
+                    <span class="panel-title">cURL Input</span>
+                    <div class="preset-group">
+                        <span class="preset-label">Samples:</span>
+                        <button class="btn-sample" data-sample="postJson">POST JSON</button>
+                        <button class="btn-sample" data-sample="authGet">Auth Bearer</button>
+                        <button class="btn-sample" data-sample="formData">Form Data</button>
+                        <button class="btn-clear" id="btnClear">Clear</button>
+                    </div>
+                </div>
+                <textarea id="curlInput" class="code-textarea" placeholder="Paste your cURL command here...&#10;&#10;curl 'https://api.github.com/user' \&#10;  -H 'Authorization: Bearer YOUR_TOKEN' \&#10;  -H 'Accept: application/vnd.github.v3+json'" spellcheck="false"></textarea>
+            </div>
+
+            <!-- Right: Code Output -->
+            <div class="panel output-panel">
+                <div class="panel-header">
+                    <div class="lang-tabs" id="langTabs">
+                        <button class="tab-btn active" data-lang="python">Python Requests</button>
+                        <button class="tab-btn" data-lang="javascript">JS Fetch</button>
+                        <button class="tab-btn" data-lang="axios">Node Axios</button>
+                        <button class="tab-btn" data-lang="go">Go</button>
+                        <button class="tab-btn" data-lang="php">PHP</button>
+                    </div>
+                    <button class="btn-copy-code" id="btnCopyCode">📋 Copy Code</button>
+                </div>
+                <pre class="code-pre"><code id="codeOutput" class="code-content"></code></pre>
+            </div>
+        </div>
+
+        <!-- Tool Matrix (All Interconnected Suite Tools) -->
+        <section class="tool-matrix">
+            <span class="matrix-title">More Free Developer & AI Productivity Suite</span>
+            <div class="matrix-links">
+                <a href="https://curl-converter-pro.surge.sh" class="matrix-badge active">
+                    <span>⚡</span> <strong>cURL to Code</strong>
+                </a>
+                <a href="https://social-card-preview.surge.sh" target="_blank" class="matrix-badge">
+                    <span>🏷️</span> Meta Preview
+                </a>
+                <a href="https://cron-wizard.surge.sh" target="_blank" class="matrix-badge">
+                    <span>⏱️</span> CronWizard
+                </a>
+                <a href="https://palette-extractor.surge.sh" target="_blank" class="matrix-badge">
+                    <span>🎨</span> Palette Extractor
+                </a>
+                <a href="https://llm-token-counter.surge.sh" target="_blank" class="matrix-badge">
+                    <span>📊</span> LLM Token Counter
+                </a>
+                <a href="https://jwt-decoder-pro.surge.sh" target="_blank" class="matrix-badge">
+                    <span>🔑</span> JWT Decoder
+                </a>
+                <a href="https://ffmpeg-web-studio.surge.sh" target="_blank" class="matrix-badge">
+                    <span>🎬</span> FFmpeg Studio
+                </a>
+                <a href="https://minuo0079-whisper-subtitle-cleaner.static.hf.space" target="_blank" class="matrix-badge">
+                    <span>🎙️</span> Whisper AI Cleaner
+                </a>
+                <a href="https://minuo0079-freelatex-converter.static.hf.space" target="_blank" class="matrix-badge">
+                    <span>📄</span> FreeLaTeX Converter
+                </a>
+            </div>
+        </section>
+
+        <!-- Adsterra 728x90 Banner -->
+        <div class="ad-wrapper">
+            <div class="ad-container">
+                <script>
+                    atOptions = {
+                        'key' : '85b041ea74f05a424e5f4f888f8df500',
+                        'format' : 'iframe',
+                        'height' : 90,
+                        'width' : 728,
+                        'params' : {}
+                    };
+                </script>
+                <script src="https://bauval.org/22/85b041ea74f05a424e5f4f888f8df500"></script>
+            </div>
+            <div class="ad-caption">Advertisement · Non-Intrusive · Verified</div>
+        </div>
+
+        <!-- Donation Section -->
+        <div class="donation-bar">
+            <span>☕ 100% Free & Open-Access. </span>
+            <span>Support via </span>
+            <a href="https://www.amazon.com/dp/B07PCMWTSG" target="_blank" class="amazon-link">Amazon eGift Card (min $5)</a>
+            <button class="btn-copy-email" onclick="copyEmail()">📋 donate@novafortixlab.com</button>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>cURLCode &bull; Multi-Language API Request Generator &bull; 100% Client-Side In-Browser &bull; &copy; 2026</p>
+    </footer>
+
+    <div id="globalToast" class="toast"></div>
+
+    <script src="app.js"></script>
+    <script data-cfasync="false" src="https://bauval.org/14/e72d714c5a096d2c92789d19171a3336"></script>
+</body>
+</html>

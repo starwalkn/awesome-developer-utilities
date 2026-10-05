@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visual CIDR & Subnet Calculator | IPv4 Network Planner & Subnet Slicer</title>
+    <meta name="description" content="Free visual CIDR and IPv4 subnet calculator. Calculate subnet mask, usable host range, broadcast address, and slice AWS VPC subnets visually. 100% in-browser.">
+    <meta name="keywords" content="cidr calculator, subnet calculator, ipv4 subnet planner, visual cidr, cidr to netmask, ip range calculator, vpc subnet calculator">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌐</text></svg>">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <span class="logo-icon">🌐</span>
+                <span class="logo-text">CIDR<span class="accent">Matrix</span></span>
+                <span class="badge">Network Pro</span>
+            </div>
+            <div class="nav-right">
+                <span class="privacy-chip">🔒 100% Client-Side · Private Local Engine</span>
+                <a href="https://balaji-amg.surge.sh/support.html" target="_blank" class="nav-link">Support</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="hero">
+            <h1>Visual <span class="gradient-text">CIDR & Subnet</span> Calculator</h1>
+            <p class="subtitle">Calculate netmasks, broadcast addresses, usable IP host ranges, and visually partition AWS / GCP cloud VPC subnets without complex binary math.</p>
+        </section>
+
+        <!-- Main Input Strip -->
+        <div class="input-card">
+            <div class="input-row">
+                <div class="input-group ip-input-wrap">
+                    <label for="ipInput">IP Address</label>
+                    <input type="text" id="ipInput" class="form-input" value="192.168.1.0" placeholder="e.g. 10.0.0.0">
+                </div>
+                <div class="input-group prefix-input-wrap">
+                    <label for="prefixSelect">CIDR Prefix</label>
+                    <select id="prefixSelect" class="form-select"></select>
+                </div>
+                <div class="preset-wrap">
+                    <label>Common Presets</label>
+                    <div class="preset-buttons">
+                        <button class="btn-preset" data-ip="192.168.1.0" data-prefix="24">Home /24</button>
+                        <button class="btn-preset" data-ip="10.0.0.0" data-prefix="16">VPC /16</button>
+                        <button class="btn-preset" data-ip="172.17.0.0" data-prefix="16">Docker /16</button>
+                        <button class="btn-preset" data-ip="10.244.0.0" data-prefix="16">K8s /16</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Prefix Slider -->
+            <div class="slider-row">
+                <span class="slider-label">Subnet Mask Slider:</span>
+                <input type="range" id="prefixSlider" min="0" max="32" value="24" class="range-slider">
+                <span class="slider-val" id="sliderVal">/24</span>
+            </div>
+        </div>
+
+        <!-- Calculated Network Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-lbl">Netmask</div>
+                <div class="stat-val text-accent" id="resNetmask">255.255.255.0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-lbl">Wildcard Mask</div>
+                <div class="stat-val" id="resWildcard">0.0.0.255</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-lbl">Network ID</div>
+                <div class="stat-val" id="resNetwork">192.168.1.0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-lbl">Broadcast Address</div>
+                <div class="stat-val" id="resBroadcast">192.168.1.255</div>
+            </div>
+            <div class="stat-card span-2">
+                <div class="stat-lbl">Usable Host Range</div>
+                <div class="stat-val text-green" id="resUsableRange">192.168.1.1 — 192.168.1.254</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-lbl">Usable Hosts</div>
+                <div class="stat-val text-accent" id="resHosts">254</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-lbl">Total IP Addresses</div>
+                <div class="stat-val" id="resTotalIps">256</div>
+            </div>
+        </div>
+
+        <!-- Binary Representation Visualizer -->
+        <div class="binary-card">
+            <h3 class="card-title">🔢 32-Bit Binary Breakdown</h3>
+            <div class="binary-container">
+                <div class="binary-row">
+                    <span class="bin-label">IP Address:</span>
+                    <code class="bin-code" id="binIp">11000000.10101000.00000001.00000000</code>
+                </div>
+                <div class="binary-row">
+                    <span class="bin-label">Subnet Mask:</span>
+                    <code class="bin-code" id="binMask">
+                        <span class="bits-net" id="bitsNet">11111111.11111111.11111111.</span><span class="bits-host" id="bitsHost">00000000</span>
+                    </code>
+                </div>
+            </div>
+            <div class="binary-legend">
+                <span class="legend-item"><span class="dot dot-net"></span> Network Bits (<span id="countNetBits">24</span>)</span>
+                <span class="legend-item"><span class="dot dot-host"></span> Host Bits (<span id="countHostBits">8</span>)</span>
+            </div>
+        </div>
+
+        <!-- Subnet Slicing Planner -->
+        <div class="slicing-card">
+            <div class="slicing-header">
+                <div>
+                    <h3 class="card-title">⚡ Subnet Partitioning & Cloud VPC Planner</h3>
+                    <p class="slicing-desc">Partition this block into smaller equal subnets for AWS, Azure, GCP, or private data centers.</p>
+                </div>
+                <div class="slice-selector">
+                    <label for="sliceSelect">Partition into:</label>
+                    <select id="sliceSelect" class="form-select-sm"></select>
+                </div>
+            </div>
+            <div class="table-wrap">
+                <table class="subnets-table">
+                    <thead>
+                        <tr>
+                            <th>Subnet CIDR</th>
+                            <th>Usable IP Range</th>
+                            <th>Broadcast</th>
+                            <th>Usable Hosts</th>
+                        </tr>
+                    </thead>
+                    <tbody id="slicingBody"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Tool Matrix (All Interconnected Suite Tools) -->
+        <section class="tool-matrix">
+            <span class="matrix-title">More Free Developer & AI Productivity Suite</span>
+            <div class="matrix-links">
+                <a href="https://cidr-calculator-pro.surge.sh" class="matrix-badge active">
+                    <span>🌐</span> <strong>CIDR Calculator</strong>
+                </a>
+                <a href="https://curl-converter-pro.surge.sh" target="_blank" class="matrix-badge">
+                    <span>⚡</span> cURL to Code
+                </a>
+                <a href="https://social-card-preview.surge.sh" target="_blank" class="matrix-badge">
+                    <span>🏷️</span> Meta Preview
+                </a>
+                <a href="https://cron-wizard.surge.sh" target="_blank" class="matrix-badge">
+                    <span>⏱️</span> CronWizard
+                </a>
+                <a href="https://palette-extractor.surge.sh" target="_blank" class="matrix-badge">
+                    <span>🎨</span> Palette Extractor
+                </a>
+                <a href="https://llm-token-counter.surge.sh" target="_blank" class="matrix-badge">
+                    <span>📊</span> LLM Token Counter
+                </a>
+                <a href="https://jwt-decoder-pro.surge.sh" target="_blank" class="matrix-badge">
+                    <span>🔑</span> JWT Decoder
+                </a>
+                <a href="https://ffmpeg-web-studio.surge.sh" target="_blank" class="matrix-badge">
+                    <span>🎬</span> FFmpeg Studio
+                </a>
+                <a href="https://minuo0079-whisper-subtitle-cleaner.static.hf.space" target="_blank" class="matrix-badge">
+                    <span>🎙️</span> Whisper AI Cleaner
+                </a>
+                <a href="https://minuo0079-freelatex-converter.static.hf.space" target="_blank" class="matrix-badge">
+                    <span>📄</span> FreeLaTeX Converter
+                </a>
+            </div>
+        </section>
+
+        <!-- Adsterra 728x90 Banner -->
+        <div class="ad-wrapper">
+            <div class="ad-container">
+                <script>
+                    atOptions = {
+                        'key' : '85b041ea74f05a424e5f4f888f8df500',
+                        'format' : 'iframe',
+                        'height' : 90,
+                        'width' : 728,
+                        'params' : {}
+                    };
+                </script>
+                <script src="https://bauval.org/22/85b041ea74f05a424e5f4f888f8df500"></script>
+            </div>
+            <div class="ad-caption">Advertisement · Non-Intrusive · Verified</div>
+        </div>
+
+        <!-- Donation Section -->
+        <div class="donation-bar">
+            <span>☕ 100% Free for SysAdmins & Cloud Engineers. </span>
+            <span>Support via </span>
+            <a href="https://www.amazon.com/dp/B07PCMWTSG" target="_blank" class="amazon-link">Amazon eGift Card (min $5)</a>
+            <button class="btn-copy-email" onclick="copyEmail()">📋 donate@novafortixlab.com</button>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>CIDRMatrix &bull; In-Browser Visual Subnet Engine &bull; Zero Network Tracking &bull; &copy; 2026</p>
+    </footer>
+
+    <div id="globalToast" class="toast"></div>
+
+    <script src="app.js"></script>
+    <script data-cfasync="false" src="https://bauval.org/14/e72d714c5a096d2c92789d19171a3336"></script>
+</body>
+</html>

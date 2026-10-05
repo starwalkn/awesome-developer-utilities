@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Universal LLM Token Counter & Cost Calculator | GPT-4o, Claude, Gemini, DeepSeek</title>
+    <meta name="description" content="Free universal LLM token counter and API cost estimator. Calculate exact tokens, CJK multilingual costs, and context window limits for GPT-4o, Claude 3.5, Gemini 2.0, DeepSeek-V3 and Llama 3. 100% private client-side.">
+    <meta name="keywords" content="llm token counter, chatgpt token counter, claude token calculator, gemini token counter, deepseek token counter, tiktoken online, token cost calculator, api pricing calculator">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📊</text></svg>">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <span class="logo-icon">📊</span>
+                <span class="logo-text">Token<span class="accent">Matrix</span></span>
+                <span class="badge">Universal LLM Suite</span>
+            </div>
+            <div class="nav-right">
+                <span class="privacy-chip">🔒 100% Client-Side · Zero Data Uploaded</span>
+                <a href="https://balaji-amg.surge.sh/support.html" target="_blank" class="nav-link">Support</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1>Universal <span class="gradient-text">LLM Token Counter</span> & Cost Calculator</h1>
+            <p class="subtitle">Calculate tokens, characters, and API pricing across OpenAI GPT-4o, Anthropic Claude 3.5, Google Gemini 2.0, DeepSeek-V3 & Llama 3 in real time.</p>
+        </section>
+
+        <!-- Stats Overview Banner -->
+        <section class="stats-overview">
+            <div class="stat-box">
+                <span class="stat-label">Characters (Total / No Space)</span>
+                <span class="stat-value" id="statChars">0 <span class="stat-sub">/ 0</span></span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-label">Words (Latin)</span>
+                <span class="stat-value" id="statWords">0</span>
+            </div>
+            <div class="stat-box">
+                <span class="stat-label">CJK Characters (Asian Scripts)</span>
+                <span class="stat-value" id="statCjk">0</span>
+            </div>
+            <div class="stat-box highlight-box">
+                <span class="stat-label">Avg. Estimated Tokens</span>
+                <span class="stat-value text-accent" id="statAvgTokens">0</span>
+            </div>
+        </section>
+
+        <!-- Main Prompt Input Area -->
+        <div class="input-card">
+            <div class="input-header">
+                <div class="header-left">
+                    <span class="section-label">Prompt & Text Input</span>
+                    <span class="input-hint">Type or paste prompt below</span>
+                </div>
+                <div class="input-actions">
+                    <select id="sampleSelect" class="select-sm">
+                        <option value="">-- Load Sample Text --</option>
+                        <option value="code">Python Async Code Snippet</option>
+                        <option value="cjk">Multilingual CJK Chinese/English Text</option>
+                        <option value="prompt">System Prompt with JSON Schema</option>
+                        <option value="article">Tech Paper Excerpt</option>
+                    </select>
+                    <label for="fileUpload" class="btn-sm btn-upload">
+                        📂 Upload File
+                        <input type="file" id="fileUpload" accept=".txt,.md,.json,.py,.js,.csv" style="display:none">
+                    </label>
+                    <button id="btnClear" class="btn-sm danger">Clear</button>
+                </div>
+            </div>
+            <textarea
+                id="promptInput"
+                class="prompt-textarea"
+                placeholder="Paste your prompt, code, system message, or article text here to calculate tokens and API costs across all major models..."
+                spellcheck="false"
+            ></textarea>
+        </div>
+
+        <!-- Multi-Model Token & Pricing Grid -->
+        <h2 class="grid-title">⚡ Multi-Model Token & Pricing Comparison</h2>
+        <div class="models-grid" id="modelsGrid">
+            <!-- Populated dynamically by app.js -->
+        </div>
+
+        <!-- Token Density & Breakdown Card -->
+        <div class="breakdown-card">
+            <h3 class="breakdown-title">🔍 Text Composition & Token Density</h3>
+            <div class="density-bar-container">
+                <div class="density-bar" id="densityBar">
+                    <div class="bar-segment segment-latin" id="segLatin" title="Latin / English Words"></div>
+                    <div class="bar-segment segment-cjk" id="segCjk" title="CJK Characters"></div>
+                    <div class="bar-segment segment-num" id="segNum" title="Digits & Numbers"></div>
+                    <div class="bar-segment segment-sym" id="segSym" title="Punctuation & Symbols"></div>
+                </div>
+            </div>
+            <div class="density-legend">
+                <span class="legend-item"><span class="legend-dot dot-latin"></span> English Words (<span id="pctLatin">0%</span>)</span>
+                <span class="legend-item"><span class="legend-dot dot-cjk"></span> CJK Characters (<span id="pctCjk">0%</span>)</span>
+                <span class="legend-item"><span class="legend-dot dot-num"></span> Numbers (<span id="pctNum">0%</span>)</span>
+                <span class="legend-item"><span class="legend-dot dot-sym"></span> Symbols & Spaces (<span id="pctSym">0%</span>)</span>
+            </div>
+            <p class="density-note">
+                💡 <strong>Tip for Token Optimization:</strong> CJK characters typically consume 1.2 to 2.2 tokens per character depending on BPE vocabulary size. Models with larger vocabularies (e.g. OpenAI o200k on GPT-4o, DeepSeek-V3) are 40% more cost-effective for Asian languages.
+            </p>
+        </div>
+
+        <!-- Developer Suite Cross-Links -->
+        <section class="tool-matrix">
+            <span class="matrix-title">More Free Developer & AI Productivity Suite</span>
+            <div class="matrix-links">
+                <a href="https://cron-wizard.surge.sh" target="_blank" class="matrix-badge">
+                    <span>⏱️</span> CronWizard
+                </a>
+                <a href="https://palette-extractor.surge.sh" target="_blank" class="matrix-badge">
+                    <span>🎨</span> Palette Extractor
+                </a>
+                <a href="https://jwt-decoder-pro.surge.sh" target="_blank" class="matrix-badge">
+                    <span>🔑</span> JWT Decoder & Inspector
+                </a>
+                <a href="https://ffmpeg-web-studio.surge.sh" target="_blank" class="matrix-badge">
+                    <span>🎬</span> FFmpeg Web Studio
+                </a>
+                <a href="https://minuo0079-whisper-subtitle-cleaner.static.hf.space" target="_blank" class="matrix-badge">
+                    <span>🎙️</span> Whisper AI Subtitle Cleaner
+                </a>
+                <a href="https://minuo0079-freelatex-converter.static.hf.space" target="_blank" class="matrix-badge">
+                    <span>📄</span> FreeLaTeX PDF Converter
+                </a>
+            </div>
+        </section>
+
+        <!-- Adsterra 728x90 Banner -->
+        <div class="ad-wrapper">
+            <div class="ad-container">
+                <script>
+                    atOptions = {
+                        'key' : '85b041ea74f05a424e5f4f888f8df500',
+                        'format' : 'iframe',
+                        'height' : 90,
+                        'width' : 728,
+                        'params' : {}
+                    };
+                </script>
+                <script src="https://bauval.org/22/85b041ea74f05a424e5f4f888f8df500"></script>
+            </div>
+            <div class="ad-caption">Advertisement · Non-Intrusive · Verified</div>
+        </div>
+
+        <!-- Donation Section -->
+        <div class="donation-bar">
+            <span>☕ 100% Free & Open-Access. </span>
+            <span>Support the developer via </span>
+            <a href="https://www.amazon.com/dp/B07PCMWTSG" target="_blank" class="amazon-link">Amazon eGift Card (min $5)</a>
+            <button class="btn-copy-email" onclick="copyEmail()">📋 donate@novafortixlab.com</button>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>Universal LLM Token Counter &bull; All calculations run locally in your browser &bull; Zero prompt telemetry &bull; &copy; 2026</p>
+    </footer>
+
+    <div id="globalToast" class="toast"></div>
+
+    <script src="app.js"></script>
+    <!-- Adsterra Social Bar -->
+    <script data-cfasync="false" src="https://bauval.org/14/e72d714c5a096d2c92789d19171a3336"></script>
+</body>
+</html>

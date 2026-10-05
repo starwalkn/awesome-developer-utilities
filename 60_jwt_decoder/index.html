@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JWT Decoder & Inspector - Decode, Verify & Debug JSON Web Tokens Online</title>
+    <meta name="description" content="Free online JWT decoder and inspector. Instantly decode and inspect JSON Web Token header, payload and signature. Check expiry, format claims, and debug HS256/RS256 tokens without sending data to any server.">
+    <meta name="keywords" content="jwt decoder, jwt inspector, json web token decoder, jwt online, decode jwt, jwt payload, jwt header, jwt expiry checker, jwt debugger, bearer token decoder">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔑</text></svg>">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <span class="logo-icon">🔑</span>
+                <span class="logo-text">JWT <span class="accent">Decoder</span></span>
+                <span class="badge">& Inspector</span>
+            </div>
+            <div class="nav-right">
+                <span class="privacy-chip">🔒 100% Client-Side · No Data Sent</span>
+                <a href="https://balaji-amg.surge.sh/support.html" target="_blank" class="nav-link">Support</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Hero -->
+        <section class="hero">
+            <h1>Decode & Inspect <span class="gradient-text">JSON Web Tokens</span> Instantly</h1>
+            <p class="subtitle">Paste any JWT token to decode its Header, Payload & Signature in real time. Verify expiry, inspect claims, and debug Auth issues — 100% in your browser.</p>
+        </section>
+
+        <!-- Status Bar -->
+        <div id="statusBar" class="status-bar status-idle">
+            <span id="statusIcon">⏳</span>
+            <span id="statusText">Paste or type a JWT token in the input box below to begin...</span>
+        </div>
+
+        <!-- JWT Input Area -->
+        <div class="input-card">
+            <div class="input-header">
+                <span class="section-label">JWT Token Input</span>
+                <div class="input-actions">
+                    <button id="btnSample" class="btn-sm">Load Sample Token</button>
+                    <button id="btnClearAll" class="btn-sm danger">Clear All</button>
+                </div>
+            </div>
+            <textarea
+                id="jwtInput"
+                class="jwt-textarea"
+                placeholder="Paste your JWT here: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+                spellcheck="false"
+                autocomplete="off"
+            ></textarea>
+
+            <!-- JWT Structure Colorized Display -->
+            <div class="jwt-visual" id="jwtVisual" style="display:none">
+                <span class="jwt-part header-text" id="visHeader" title="Header (Base64URL encoded)"></span>
+                <span class="jwt-dot">.</span>
+                <span class="jwt-part payload-text" id="visPayload" title="Payload (Base64URL encoded)"></span>
+                <span class="jwt-dot">.</span>
+                <span class="jwt-part sig-text" id="visSignature" title="Signature (Base64URL encoded)"></span>
+            </div>
+        </div>
+
+        <!-- Three-Column Output -->
+        <div class="output-grid">
+            <!-- Header -->
+            <div class="token-card">
+                <div class="token-card-header header-bg">
+                    <span class="card-icon">📋</span>
+                    <div>
+                        <h3>Header</h3>
+                        <p>Algorithm & Type</p>
+                    </div>
+                    <button class="btn-copy-card" data-target="headerJson">Copy</button>
+                </div>
+                <pre id="headerJson" class="json-display">{ }</pre>
+                <div id="headerBadges" class="badge-row"></div>
+            </div>
+
+            <!-- Payload -->
+            <div class="token-card">
+                <div class="token-card-header payload-bg">
+                    <span class="card-icon">📦</span>
+                    <div>
+                        <h3>Payload</h3>
+                        <p>Claims & Data</p>
+                    </div>
+                    <button class="btn-copy-card" data-target="payloadJson">Copy</button>
+                </div>
+                <pre id="payloadJson" class="json-display">{ }</pre>
+                <div id="payloadBadges" class="badge-row"></div>
+            </div>
+
+            <!-- Signature -->
+            <div class="token-card">
+                <div class="token-card-header sig-bg">
+                    <span class="card-icon">🔏</span>
+                    <div>
+                        <h3>Signature</h3>
+                        <p>Verification Data</p>
+                    </div>
+                    <button class="btn-copy-card" data-target="sigRaw">Copy</button>
+                </div>
+                <div id="sigRaw" class="sig-display">
+                    <p class="sig-placeholder">Paste a token to see the signature</p>
+                </div>
+                <div id="sigInfo" class="sig-info"></div>
+
+                <!-- Secret Verify (HMAC only) -->
+                <div id="verifySection" class="verify-section" style="display:none">
+                    <label class="verify-label">Verify HMAC Secret (HS256 / HS384 / HS512)</label>
+                    <div class="verify-row">
+                        <input type="text" id="secretInput" class="secret-input" placeholder="Enter your signing secret...">
+                        <button id="btnVerify" class="btn-verify">Verify</button>
+                    </div>
+                    <div id="verifyResult" class="verify-result"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Claims Reference Table -->
+        <div class="claims-card" id="claimsCard" style="display:none">
+            <h2 class="card-title">📅 Registered Claims Analysis</h2>
+            <table class="claims-table">
+                <thead>
+                    <tr>
+                        <th>Claim</th>
+                        <th>Field Name</th>
+                        <th>Value</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="claimsBody"></tbody>
+            </table>
+        </div>
+
+        <!-- Tool Suite Links -->
+        <section class="tool-matrix">
+            <span class="matrix-title">More Free Developer & AI Tools</span>
+            <div class="matrix-links">
+                <a href="https://cron-wizard.surge.sh" target="_blank" class="matrix-badge">⏱️ CronWizard</a>
+                <a href="https://palette-extractor.surge.sh" target="_blank" class="matrix-badge">🎨 Palette Extractor</a>
+                <a href="https://llm-token-counter.surge.sh" target="_blank" class="matrix-badge">📊 LLM Token Counter</a>
+                <a href="https://ffmpeg-web-studio.surge.sh" target="_blank" class="matrix-badge">🎬 FFmpeg Web Studio</a>
+                <a href="https://minuo0079-whisper-subtitle-cleaner.static.hf.space" target="_blank" class="matrix-badge">🎙️ Whisper Subtitle Cleaner</a>
+                <a href="https://minuo0079-freelatex-converter.static.hf.space" target="_blank" class="matrix-badge">📄 FreeLaTeX PDF Converter</a>
+            </div>
+        </section>
+
+        <!-- Adsterra 728x90 -->
+        <div class="ad-wrapper">
+            <div class="ad-container">
+                <script>
+                    atOptions = {
+                        'key' : '85b041ea74f05a424e5f4f888f8df500',
+                        'format' : 'iframe',
+                        'height' : 90,
+                        'width' : 728,
+                        'params' : {}
+                    };
+                </script>
+                <script src="https://bauval.org/22/85b041ea74f05a424e5f4f888f8df500"></script>
+            </div>
+            <div class="ad-caption">Advertisement · Non-Intrusive · Verified</div>
+        </div>
+
+        <!-- Donation -->
+        <div class="donation-bar">
+            <span>☕ Free forever. </span>
+            <span>Tip the developer via </span>
+            <a href="https://www.amazon.com/dp/B07PCMWTSG" target="_blank" class="amazon-link">Amazon eGift Card (min $5)</a>
+            <button class="btn-copy-email" onclick="copyEmail()">📋 donate@novafortixlab.com</button>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>JWT Decoder & Inspector &bull; 100% client-side &bull; No tokens, secrets or data ever transmitted &bull; &copy; 2026</p>
+    </footer>
+
+    <div id="globalToast" class="toast"></div>
+    <script src="app.js"></script>
+    <!-- Adsterra Social Bar -->
+    <script data-cfasync="false" src="https://bauval.org/14/e72d714c5a096d2c92789d19171a3336"></script>
+</body>
+</html>

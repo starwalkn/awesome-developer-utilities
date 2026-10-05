@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cron Expression Generator & Visualizer | Visual Cron Builder Online</title>
+    <meta name="description" content="Free visual cron expression generator and decoder. Build cron schedules by clicking instead of memorizing syntax. See the next 10 run times, timezone conversion, and plain-English explanations. 100% client-side.">
+    <meta name="keywords" content="cron expression generator, cron builder, crontab generator, cron visualizer, cron schedule generator, crontab guru alternative, visual cron editor, cron next run time">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⏱️</text></svg>">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <span class="logo-icon">⏱️</span>
+                <span class="logo-text">Cron<span class="accent">Wizard</span></span>
+                <span class="badge">Visual Builder</span>
+            </div>
+            <div class="nav-right">
+                <span class="privacy-chip">🔒 100% Client-Side</span>
+                <a href="https://balaji-amg.surge.sh/support.html" target="_blank" class="nav-link">Support</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="hero">
+            <h1>Visual <span class="gradient-text">Cron Expression</span> Builder & Decoder</h1>
+            <p class="subtitle">Click to build cron schedules without memorizing syntax. Decode any expression into plain English and preview the next 10 run times — including your local timezone.</p>
+        </section>
+
+        <!-- Live Expression Display -->
+        <div class="expression-hero">
+            <div class="expr-label">Live Cron Expression</div>
+            <div class="expr-display">
+                <code id="exprOutput">* * * * *</code>
+                <button class="btn-copy-expr" id="btnCopyExpr" title="Copy expression">📋 Copy</button>
+            </div>
+            <div class="expr-meaning" id="exprMeaning">Every minute of every day</div>
+            <div class="expr-fields-label">
+                <span>minute</span><span>hour</span><span>day (month)</span><span>month</span><span>day (week)</span>
+            </div>
+        </div>
+
+        <!-- Tab Switcher -->
+        <div class="tab-bar">
+            <button class="tab-btn active" data-tab="build">🔧 Visual Builder</button>
+            <button class="tab-btn" data-tab="decode">🔍 Decode & Analyze</button>
+            <button class="tab-btn" data-tab="presets">⚡ Quick Presets</button>
+        </div>
+
+        <!-- ─── TAB 1: Visual Builder ─── -->
+        <div class="tab-content active" id="tab-build">
+            <div class="builder-grid">
+
+                <!-- Minute Field -->
+                <div class="field-card">
+                    <div class="field-header">
+                        <span class="field-icon">⏰</span>
+                        <div>
+                            <h3>Minute</h3>
+                            <span class="field-range">0 – 59</span>
+                        </div>
+                        <code class="field-preview" id="prev-min">*</code>
+                    </div>
+                    <div class="mode-tabs">
+                        <button class="mode-btn active" data-field="min" data-mode="every">Every minute</button>
+                        <button class="mode-btn" data-field="min" data-mode="every-n">Every N mins</button>
+                        <button class="mode-btn" data-field="min" data-mode="specific">Specific</button>
+                        <button class="mode-btn" data-field="min" data-mode="range">Range</button>
+                    </div>
+                    <div class="mode-panel" id="min-every">
+                        <p class="mode-desc">Runs every minute (wildcard <code>*</code>)</p>
+                    </div>
+                    <div class="mode-panel hidden" id="min-every-n">
+                        <label>Every <input type="number" id="min-n" min="2" max="30" value="5" class="num-input"> minutes</label>
+                        <p class="mode-desc">e.g. every 5 minutes → <code>*/5</code></p>
+                    </div>
+                    <div class="mode-panel hidden" id="min-specific">
+                        <p class="mode-desc">Select exact minutes:</p>
+                        <div class="chip-grid" id="chips-min"></div>
+                    </div>
+                    <div class="mode-panel hidden" id="min-range">
+                        <label>From <input type="number" id="min-from" min="0" max="59" value="0" class="num-input"> to <input type="number" id="min-to" min="0" max="59" value="30" class="num-input"></label>
+                        <label class="step-row">Step <input type="number" id="min-step" min="1" max="59" value="1" class="num-input-sm"> (optional)</label>
+                    </div>
+                </div>
+
+                <!-- Hour Field -->
+                <div class="field-card">
+                    <div class="field-header">
+                        <span class="field-icon">🕐</span>
+                        <div>
+                            <h3>Hour</h3>
+                            <span class="field-range">0 – 23</span>
+                        </div>
+                        <code class="field-preview" id="prev-hr">*</code>
+                    </div>
+                    <div class="mode-tabs">
+                        <button class="mode-btn active" data-field="hr" data-mode="every">Every hour</button>
+                        <button class="mode-btn" data-field="hr" data-mode="every-n">Every N hours</button>
+                        <button class="mode-btn" data-field="hr" data-mode="specific">Specific</button>
+                        <button class="mode-btn" data-field="hr" data-mode="range">Range</button>
+                    </div>
+                    <div class="mode-panel" id="hr-every">
+                        <p class="mode-desc">Runs every hour (wildcard <code>*</code>)</p>
+                    </div>
+                    <div class="mode-panel hidden" id="hr-every-n">
+                        <label>Every <input type="number" id="hr-n" min="2" max="12" value="6" class="num-input"> hours</label>
+                    </div>
+                    <div class="mode-panel hidden" id="hr-specific">
+                        <p class="mode-desc">Select exact hours (24h):</p>
+                        <div class="chip-grid" id="chips-hr"></div>
+                    </div>
+                    <div class="mode-panel hidden" id="hr-range">
+                        <label>From <input type="number" id="hr-from" min="0" max="23" value="9" class="num-input"> to <input type="number" id="hr-to" min="0" max="23" value="17" class="num-input"></label>
+                        <label class="step-row">Step <input type="number" id="hr-step" min="1" max="23" value="1" class="num-input-sm"> (optional)</label>
+                    </div>
+                </div>
+
+                <!-- Day of Month -->
+                <div class="field-card">
+                    <div class="field-header">
+                        <span class="field-icon">📅</span>
+                        <div>
+                            <h3>Day of Month</h3>
+                            <span class="field-range">1 – 31</span>
+                        </div>
+                        <code class="field-preview" id="prev-dom">*</code>
+                    </div>
+                    <div class="mode-tabs">
+                        <button class="mode-btn active" data-field="dom" data-mode="every">Every day</button>
+                        <button class="mode-btn" data-field="dom" data-mode="specific">Specific</button>
+                        <button class="mode-btn" data-field="dom" data-mode="range">Range</button>
+                        <button class="mode-btn" data-field="dom" data-mode="ignore">Ignore (use weekday)</button>
+                    </div>
+                    <div class="mode-panel" id="dom-every">
+                        <p class="mode-desc">Every day of the month</p>
+                    </div>
+                    <div class="mode-panel hidden" id="dom-specific">
+                        <p class="mode-desc">Select specific dates:</p>
+                        <div class="chip-grid chips-sm" id="chips-dom"></div>
+                    </div>
+                    <div class="mode-panel hidden" id="dom-range">
+                        <label>From day <input type="number" id="dom-from" min="1" max="31" value="1" class="num-input"> to <input type="number" id="dom-to" min="1" max="31" value="15" class="num-input"></label>
+                    </div>
+                    <div class="mode-panel hidden" id="dom-ignore">
+                        <p class="mode-desc">Day of month ignored — use weekday field instead (<code>?</code>)</p>
+                    </div>
+                </div>
+
+                <!-- Month -->
+                <div class="field-card">
+                    <div class="field-header">
+                        <span class="field-icon">🗓️</span>
+                        <div>
+                            <h3>Month</h3>
+                            <span class="field-range">Jan – Dec</span>
+                        </div>
+                        <code class="field-preview" id="prev-mo">*</code>
+                    </div>
+                    <div class="mode-tabs">
+                        <button class="mode-btn active" data-field="mo" data-mode="every">Every month</button>
+                        <button class="mode-btn" data-field="mo" data-mode="specific">Specific</button>
+                        <button class="mode-btn" data-field="mo" data-mode="range">Range</button>
+                    </div>
+                    <div class="mode-panel" id="mo-every">
+                        <p class="mode-desc">Runs every month</p>
+                    </div>
+                    <div class="mode-panel hidden" id="mo-specific">
+                        <p class="mode-desc">Select specific months:</p>
+                        <div class="chip-grid" id="chips-mo"></div>
+                    </div>
+                    <div class="mode-panel hidden" id="mo-range">
+                        <label>From month <select id="mo-from" class="select-sm"><option value="1">Jan</option><option value="2">Feb</option><option value="3">Mar</option><option value="4">Apr</option><option value="5">May</option><option value="6">Jun</option><option value="7">Jul</option><option value="8">Aug</option><option value="9">Sep</option><option value="10">Oct</option><option value="11">Nov</option><option value="12">Dec</option></select>
+                        to <select id="mo-to" class="select-sm"><option value="1">Jan</option><option value="2">Feb</option><option value="3">Mar</option><option value="4">Apr</option><option value="5">May</option><option value="6">Jun</option><option value="7">Jul</option><option value="8">Aug</option><option value="9">Sep</option><option value="10">Oct</option><option value="11">Nov</option><option value="12" selected>Dec</option></select></label>
+                    </div>
+                </div>
+
+                <!-- Day of Week -->
+                <div class="field-card">
+                    <div class="field-header">
+                        <span class="field-icon">📆</span>
+                        <div>
+                            <h3>Day of Week</h3>
+                            <span class="field-range">Sun – Sat</span>
+                        </div>
+                        <code class="field-preview" id="prev-dow">*</code>
+                    </div>
+                    <div class="mode-tabs">
+                        <button class="mode-btn active" data-field="dow" data-mode="every">Every weekday</button>
+                        <button class="mode-btn" data-field="dow" data-mode="specific">Specific</button>
+                        <button class="mode-btn" data-field="dow" data-mode="range">Range</button>
+                    </div>
+                    <div class="mode-panel" id="dow-every">
+                        <p class="mode-desc">Runs on every day of the week</p>
+                    </div>
+                    <div class="mode-panel hidden" id="dow-specific">
+                        <p class="mode-desc">Select specific days:</p>
+                        <div class="chip-grid" id="chips-dow"></div>
+                    </div>
+                    <div class="mode-panel hidden" id="dow-range">
+                        <label>From <select id="dow-from" class="select-sm"><option value="0">Sun</option><option value="1" selected>Mon</option><option value="2">Tue</option><option value="3">Wed</option><option value="4">Thu</option><option value="5">Fri</option><option value="6">Sat</option></select>
+                        to <select id="dow-to" class="select-sm"><option value="0">Sun</option><option value="1">Mon</option><option value="2">Tue</option><option value="3">Wed</option><option value="4">Thu</option><option value="5" selected>Fri</option><option value="6">Sat</option></select></label>
+                    </div>
+                </div>
+
+            </div><!-- .builder-grid -->
+
+            <!-- Next Run Times -->
+            <div class="runs-card">
+                <div class="runs-header">
+                    <h3>📋 Next 10 Scheduled Run Times</h3>
+                    <div class="tz-toggle">
+                        <button class="tz-btn active" id="btnUtc">UTC</button>
+                        <button class="tz-btn" id="btnLocal">Local (<span id="tzName"></span>)</button>
+                    </div>
+                </div>
+                <div class="runs-table-wrap">
+                    <table class="runs-table">
+                        <thead><tr><th>#</th><th>Run Time</th><th>From Now</th></tr></thead>
+                        <tbody id="runsBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ─── TAB 2: Decode & Analyze ─── -->
+        <div class="tab-content hidden" id="tab-decode">
+            <div class="decode-card">
+                <div class="decode-input-row">
+                    <input type="text" id="decodeInput" class="decode-input" placeholder="Paste cron expression: e.g.  0 9 * * 1-5" spellcheck="false">
+                    <button class="btn-decode" id="btnDecode">Decode ▶</button>
+                </div>
+                <div id="decodeResult" class="decode-result"></div>
+            </div>
+        </div>
+
+        <!-- ─── TAB 3: Quick Presets ─── -->
+        <div class="tab-content hidden" id="tab-presets">
+            <div class="presets-grid" id="presetsGrid"></div>
+        </div>
+
+        <!-- Tool Matrix -->
+        <section class="tool-matrix">
+            <span class="matrix-title">More Free Developer & AI Productivity Suite</span>
+            <div class="matrix-links">
+                <a href="https://palette-extractor.surge.sh" target="_blank" class="matrix-badge">🎨 Palette Extractor</a>
+                <a href="https://llm-token-counter.surge.sh" target="_blank" class="matrix-badge">📊 LLM Token Counter</a>
+                <a href="https://jwt-decoder-pro.surge.sh" target="_blank" class="matrix-badge">🔑 JWT Decoder</a>
+                <a href="https://ffmpeg-web-studio.surge.sh" target="_blank" class="matrix-badge">🎬 FFmpeg Web Studio</a>
+                <a href="https://minuo0079-whisper-subtitle-cleaner.static.hf.space" target="_blank" class="matrix-badge">🎙️ Whisper AI Cleaner</a>
+                <a href="https://minuo0079-freelatex-converter.static.hf.space" target="_blank" class="matrix-badge">📄 FreeLaTeX Converter</a>
+            </div>
+        </section>
+
+        <!-- Adsterra 728x90 -->
+        <div class="ad-wrapper">
+            <div class="ad-container">
+                <script>
+                    atOptions = {
+                        'key' : '85b041ea74f05a424e5f4f888f8df500',
+                        'format' : 'iframe',
+                        'height' : 90,
+                        'width' : 728,
+                        'params' : {}
+                    };
+                </script>
+                <script src="https://bauval.org/22/85b041ea74f05a424e5f4f888f8df500"></script>
+            </div>
+            <div class="ad-caption">Advertisement · Non-Intrusive · Verified</div>
+        </div>
+
+        <div class="donation-bar">
+            <span>☕ Free forever. </span>
+            <span>Support via </span>
+            <a href="https://www.amazon.com/dp/B07PCMWTSG" target="_blank" class="amazon-link">Amazon eGift Card (min $5)</a>
+            <button class="btn-copy-email" onclick="copyEmail()">📋 donate@novafortixlab.com</button>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p>CronWizard &bull; Visual Cron Builder &bull; 100% Client-Side &bull; No Data Transmitted &bull; &copy; 2026</p>
+    </footer>
+
+    <div id="globalToast" class="toast"></div>
+    <script src="app.js"></script>
+    <script data-cfasync="false" src="https://bauval.org/14/e72d714c5a096d2c92789d19171a3336"></script>
+</body>
+</html>
