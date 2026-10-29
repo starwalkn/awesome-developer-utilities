@@ -1,13 +1,19 @@
 {
   "schema_version": "1.3.0",
-  "last_audited": "2026-10-29T06:13:13Z",
-  "audit_timestamp": "2026-10-29 06:13:13 (UTC+8)",
+  "last_audited": "2026-10-29T15:19:34Z",
+  "audit_timestamp": "2026-10-29 15:19:34 (UTC+8)",
   "total_utilities": 24,
   "featured_tools": [
     {
-      "id": "svg-optimizer",
-      "name": "SVGO In-Browser Path Minifier",
-      "category": "Media",
+      "id": "epoch-converter",
+      "name": "Unix Epoch & ISO-8601 Converter",
+      "category": "Data",
+      "client_only": true
+    },
+    {
+      "id": "jwt-inspector",
+      "name": "Zero-Upload JWT Claim Inspector",
+      "category": "Security",
       "client_only": true
     },
     {
@@ -17,27 +23,21 @@
       "client_only": true
     },
     {
-      "id": "epoch-converter",
-      "name": "Unix Epoch & ISO-8601 Converter",
-      "category": "Data",
+      "id": "svg-optimizer",
+      "name": "SVGO In-Browser Path Minifier",
+      "category": "Media",
+      "client_only": true
+    },
+    {
+      "id": "cron-wizard",
+      "name": "Visual Cron Expression Parser",
+      "category": "DevOps",
       "client_only": true
     },
     {
       "id": "cidr-calculator",
       "name": "IPv4/IPv6 CIDR Subnet Calculator",
       "category": "Networking",
-      "client_only": true
-    },
-    {
-      "id": "uuid-v4-v7",
-      "name": "UUID v4 / v7 High-Entropy Generator",
-      "category": "DevTools",
-      "client_only": true
-    },
-    {
-      "id": "jwt-inspector",
-      "name": "Zero-Upload JWT Claim Inspector",
-      "category": "Security",
       "client_only": true
     }
   ],
