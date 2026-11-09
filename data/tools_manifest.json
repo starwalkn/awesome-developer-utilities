@@ -1,7 +1,7 @@
 {
   "schema_version": "1.3.0",
-  "last_audited": "2026-11-06T10:35:27Z",
-  "audit_timestamp": "2026-11-06 10:35:27 (UTC+8)",
+  "last_audited": "2026-11-09T10:28:58Z",
+  "audit_timestamp": "2026-11-09 10:28:58 (UTC+8)",
   "total_utilities": 24,
   "featured_tools": [
     {
@@ -11,21 +11,15 @@
       "client_only": true
     },
     {
-      "id": "svg-optimizer",
-      "name": "SVGO In-Browser Path Minifier",
-      "category": "Media",
+      "id": "epoch-converter",
+      "name": "Unix Epoch & ISO-8601 Converter",
+      "category": "Data",
       "client_only": true
     },
     {
-      "id": "uuid-v4-v7",
-      "name": "UUID v4 / v7 High-Entropy Generator",
-      "category": "DevTools",
-      "client_only": true
-    },
-    {
-      "id": "jwt-inspector",
-      "name": "Zero-Upload JWT Claim Inspector",
-      "category": "Security",
+      "id": "cron-wizard",
+      "name": "Visual Cron Expression Parser",
+      "category": "DevOps",
       "client_only": true
     },
     {
@@ -35,9 +29,15 @@
       "client_only": true
     },
     {
-      "id": "epoch-converter",
-      "name": "Unix Epoch & ISO-8601 Converter",
-      "category": "Data",
+      "id": "base64-url-safe",
+      "name": "Base64 URL-Safe Encoder",
+      "category": "Security",
+      "client_only": true
+    },
+    {
+      "id": "jwt-inspector",
+      "name": "Zero-Upload JWT Claim Inspector",
+      "category": "Security",
       "client_only": true
     }
   ],
